@@ -1,10 +1,14 @@
 package com.nirmaljeffrey.dev.pokedex.di
 
+import android.content.Context
+import com.google.firebase.analytics.FirebaseAnalytics
+import com.google.firebase.crashlytics.FirebaseCrashlytics
 import com.nirmaljeffrey.dev.pokedex.data.remote.PokeApi
 import com.nirmaljeffrey.dev.pokedex.util.Constants
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
+import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
 import dagger.multibindings.Multibinds
 import okhttp3.Interceptor
@@ -41,6 +45,18 @@ abstract class AppModule {
                 .baseUrl(Constants.BASE_URL)
                 .build()
                 .create(PokeApi::class.java)
+        }
+
+        @Provides
+        @Singleton
+        fun providesFirebaseCrashlytics(): FirebaseCrashlytics {
+            return FirebaseCrashlytics.getInstance()
+        }
+
+        @Provides
+        @Singleton
+        fun providesFirebaseAnalytics(@ApplicationContext context: Context): FirebaseAnalytics {
+            return FirebaseAnalytics.getInstance(context)
         }
     }
 }

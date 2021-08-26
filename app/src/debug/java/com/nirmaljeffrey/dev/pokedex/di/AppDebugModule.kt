@@ -11,6 +11,7 @@ import dagger.hilt.components.SingletonComponent
 import dagger.multibindings.IntoSet
 import okhttp3.Interceptor
 import okhttp3.logging.HttpLoggingInterceptor
+import timber.log.Timber
 import javax.inject.Singleton
 
 @Module
@@ -38,5 +39,15 @@ object AppDebugModule {
     @IntoSet
     fun providesChuckerInterceptor(@ApplicationContext context: Context): Interceptor {
         return ChuckerInterceptor.Builder(context).build()
+    }
+
+    @Provides
+    @Singleton
+    fun providesDebugTimberTree(): Timber.Tree {
+        return object : Timber.DebugTree() {
+            override fun createStackElementTag(element: StackTraceElement): String {
+                return super.createStackElementTag(element) + ":" + element.lineNumber
+            }
+        }
     }
 }
