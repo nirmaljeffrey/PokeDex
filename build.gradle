@@ -28,4 +28,5 @@ task clean(type: Delete) {
 apply plugin: "scabbard.gradle"
 scabbard {
     enabled true
+    outputFormat "svg"
 }
